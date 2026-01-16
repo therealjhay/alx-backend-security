@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'ip_tracking.middleware.RequestLoggingMidleware',  # Custom middleware for logging requests
+    'ip_tracking.middleware.RequestLoggingMiddleware',  # Custom middleware for logging requests
     'whitenoise.middleware.WhiteNoiseMiddleware',  # For serving static files
 ]
 
