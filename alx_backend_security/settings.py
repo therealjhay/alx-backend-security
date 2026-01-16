@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ip_tracking',  # Custom app for IP tracking
+    'rest_framework',
+    'drf_yasg',  # For Swagger documentation
 ]
 
 MIDDLEWARE = [
