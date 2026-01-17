@@ -39,8 +39,5 @@ urlpatterns = [
     # 2. Add the Swagger URL
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     
-    # 3. IMPORTANT: Did you forget your app URLs? 
-    # If you have endpoints like /auth/ or /api/, you need to include them here too.
-    # Uncomment the line below if you have an app named 'ip_tracking' or similar:
-    # path('api/', include('ip_tracking.urls')), 
+    path('api/', include('ip_tracking.urls')), 
 ]

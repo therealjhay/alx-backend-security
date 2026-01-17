@@ -1,18 +1,34 @@
-from django.http import HttpResponse
-from ratelimit.decorators import ratelimit
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 from django.contrib.auth import authenticate, login
+from ratelimit.decorators import ratelimit
+from drf_yasg.utils import swagger_auto_schema
+from .serializers import LoginSerializer
 
-# Example: login view with rate limiting
+@swagger_auto_schema(
+    method='post',
+    request_body=LoginSerializer,
+    operation_description="Login with rate limiting protection"
+)
+@api_view(['POST']) # <--- Crucial: Makes it visible to Swagger
 @ratelimit(key='ip', rate='5/m', method='POST', block=True)
-@ratelimit(key='user_or_ip', rate='10/m', method='POST', block=True)
 def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+    # In DRF, we use request.data instead of request.POST
+    serializer = LoginSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        assert serializer.validated_data is not None
+        
+        username = serializer.validated_data['username']
+        password = serializer.validated_data['password']
+        
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
-            return HttpResponse("Login successful")
+            return Response({"message": "Login successful"}, status=status.HTTP_200_OK)
         else:
-            return HttpResponse("Invalid credentials", status=401)
-    return HttpResponse("Login page")
+            return Response({"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
