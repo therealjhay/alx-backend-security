@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import authenticate, login
-from ratelimit.decorators import ratelimit
+from django_ratelimit.decorators import ratelimit
 from drf_yasg.utils import swagger_auto_schema
 from .serializers import LoginSerializer
 
